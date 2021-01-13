@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+spec:
+  selector:
+    matchLabels:
+      run: test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: test
+    spec:
+      containers:
+      - name: server
+        image: nginx:1.19
+        ports:
+        - containerPort: 80
+      - name: client
+        image: ubuntu
+        command: ["/bin/sleep", "3650d"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test
+  labels:
+    run: test
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    run: test
